@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Consultar Notas de Exámenes - DGT</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    .form-container, .resultado-container {
+      background-color: #dbe2ea;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      border: 1px solid #ccc;
+      display: none;
+    }
+
+    .form-container.active, .resultado-container.active {
+      display: block;
+    }
+
+    h2 {
+      background-color: #425b78;
+      color: white;
+      padding: 10px;
+      margin: -20px -20px 20px -20px;
+      font-size: 18px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 8px 15px;
+      background-color: #4a4a4a;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2f2f2f;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .error {
+      color: red;
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+
+    .resultado {
+      text-align: center;
+      font-size: 60px;
+      color: red;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .detalle {
+      font-size: 18px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .icono {
+      text-align: center;
+      font-size: 80px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FORMULARIO -->
+  <div class="form-container active" id="formulario">
+    <h2>CONSULTAR NOTAS DE EXÁMENES</h2>
+    <form id="dgtForm">
+      <label>NIF/NIE (*):</label>
+      <input type="text" id="nif" required>
+
+      <label>Fecha de examen (*):</label>
+      <input type="date" id="fechaExamen" required>
+
+      <label>Clase de permiso (*):</label>
+      <select id="clasePermiso" required>
+        <option value="">Seleccione</option>
+        <option value="AM">AM</option>
+        <option value="A1">A1</option>
+        <option value="A2">A2</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C1">C1</option>
+        <option value="C">C</option>
+        <option value="D1">D1</option>
+        <option value="D">D</option>
+        <option value="BE">BE</option>
+        <option value="C1E">C1E</option>
+        <option value="CE">CE</option>
+        <option value="D1E">D1E</option>
+        <option value="DE">DE</option>
+      </select>
+
+      <label>Fecha de nacimiento (*):</label>
+      <input type="date" id="fechaNacimiento" required>
+
+      <div class="buttons">
+        <button type="submit">Buscar</button>
+        <button type="reset">Limpiar</button>
+      </div>
+
+      <div class="error" id="mensajeError" style="display: none;">
+        No hay ningún registro para los datos introducidos.<br>
+        Recuerde que las notas permanecen publicadas durante quince días.
+      </div>
+    </form>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado-container" id="resultado">
+    <h2>RESULTADO DEL EXAMEN</h2>
+    <div class="resultado">NO APTO</div>
+    <div class="detalle" id="nombre">Nombre: GUERREIRO HERNÁNDEZ, IGNACIO</div>
+    <div class="detalle" id="dni">DNI/NIE: </div>
+    <div class="detalle" id="permiso">Tipo de permiso: </div>
+    <div class="detalle" id="fecha">Fecha del examen: </div>
+    <div class="icono">❌</div>
+  </div>
+
+  <script>
+    document.getElementById("dgtForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nif = document.getElementById("nif").value.trim();
+      const fechaExamen = document.getElementById("fechaExamen").value;
+      const clase = document.getElementById("clasePermiso").value;
+      const fechaNacimiento = document.getElementById("fechaNacimiento").value;
+
+      const matchNIF = "16073802E";
+      const matchFechaExamen = "2025-05-29";
+      const matchClase = "B";
+      const matchNacimiento = "1993-10-10";
+
+      if (nif === matchNIF && fechaExamen === matchFechaExamen &&
+          clase === matchClase && fechaNacimiento === matchNacimiento) {
+        
+        // Mostrar pantalla de resultado
+        document.getElementById("formulario").classList.remove("active");
+        document.getElementById("resultado").classList.add("active");
+
+        // Insertar los datos en la pantalla de resultado
+        document.getElementById("dni").textContent = "DNI/NIE: " + nif;
+        document.getElementById("permiso").textContent = "Tipo de permiso: " + clase;
+        document.getElementById("fecha").textContent = "Fecha del examen: " + fechaExamen;
+
+      } else {
+        // Mostrar mensaje de error
+        document.getElementById("mensajeError").style.display = "block";
+      }
+    });
+  </script>
+
+</body>
+</html>
